@@ -1,0 +1,20 @@
+body {
+    background-color: #222;
+    color: #eee;
+}
+
+.select__wrapper, .choice__wrapper {
+    display: flex;
+    justify-content: space-around;    
+}
+
+.select__wrapper select {
+    flex-basis: 30%;
+}
+
+.choice__wrapper p {
+    font-size: 30px;
+    margin: 15px;
+    /*border: 1px dotted #aaa;*/
+    flex-basis: 100%;
+}

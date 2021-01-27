@@ -36,16 +36,14 @@ document.getElementById('town').disabled = true;
 // disable hotel selection until town is not selected
 document.getElementById('hotel').disabled = true;
 
-selectRegion.addEventListener('change', function(){
+selectRegion.addEventListener('click', function(){    
+    // disable hotel selection until town is not selected
+    document.getElementById('hotel').disabled = true;
     if (selectRegion.value !== '') {
-        var selectTown = document.getElementById('town');
-        // clear town options
-        selectTown.innerHTML = '';
-        // set default option
-        optionTown = document.createElement('option');
-        optionTown.text = "Wybierz miasto";
-        optionTown.value = '';
-        selectTown.add(optionTown);
+        // clear town options        
+        var selectTown = clearSelectOptions('town', 'Wybierz miasto');        
+        // clear hotel options
+        clearSelectOptions('hotel', 'Wybierz hotel');
         
         // add town options associated with region
         var towns = json.region[selectRegion.value];
@@ -60,28 +58,21 @@ selectRegion.addEventListener('change', function(){
         // enable town selection
         document.getElementById('town').disabled = false;        
         
-        selectTown.addEventListener('change', function() {
-            var regionName = selectRegion.value;
-            var townName = selectTown.value;
+        selectTown.addEventListener('click', function() {
 //            console.log(regionName, townName);
+            var selectHotel = clearSelectOptions('hotel', 'Wybierz hotel');
             if (regionName !== '' && townName !== '') {
+                var regionName = selectRegion.value;
+                var townName = selectTown.value;
                 // get selected town
                 var hotels = getHotels(regionName, townName);
-                var selectHotel = document.getElementById('hotel');
-                // clear hotel options
-                selectHotel.innerHTML = '';
-                // set default option
-                optionHotel = document.createElement('option');
-                optionHotel.text = "Wybierz hotel";
-                optionHotel.value = '';
-                selectHotel.add(optionHotel);
                 for (i = 0; i < hotels.length; i++) {
                     optionHotel = document.createElement('option');
                     optionHotel.text = hotels[i];
                     optionHotel.value = hotels[i];
                     selectHotel.add(optionHotel);
                 }
-                selectHotel.addEventListener('change', function() {
+                selectHotel.addEventListener('change', function() {                   
                    var hotelName = selectHotel.value;
                    console.log(regionName, townName, hotelName);
                    var hotelChoice = document.getElementById('hotelChoice');
@@ -100,15 +91,7 @@ selectRegion.addEventListener('change', function(){
         // disable town selection
         document.getElementById('town').disabled = true;
     }
-//    console.log(selectRegion.value);
 });
-
-//var selectHotel= document.getElementById('hotel');
-//selectHotel.disabled = true;
-//
-//selectHotel.addEventListener('change', function() {
-//    
-//});
 
 function getHotels(regionName, townName){
     if (townName !=='') {
@@ -122,4 +105,15 @@ function getHotels(regionName, townName){
     }
 }
 
-
+function clearSelectOptions(selectId, message) {
+    var selected = document.getElementById(selectId);
+    // clear options
+    selected.innerHTML = '';
+    // set default option
+    option = document.createElement('option');
+    option.text = message;
+    option.value = '';
+    selected.add(option);
+    
+    return selected;
+}
